@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import GuestBookInput from './GuestBookInput';
+import { connect } from 'react-redux';
 
 class App extends Component {
   state = {
@@ -21,6 +22,10 @@ class App extends Component {
       entries,
     } = this.state;
 
+    const {
+      messages
+    } = this.props;
+
     return (
       <div className="App">
         <div className="App-header">
@@ -31,6 +36,11 @@ class App extends Component {
           onGuestBookEntry={this.onGuestBookEntry}
         />
         <section>
+          {messages.map((entry, index) => (
+            <article key={index}>{entry}</article>
+          ))}
+        </section>
+        <section>
           {entries.map((entry, index) => (
             <article key={index}>{entry}</article>
           ))}
@@ -40,4 +50,12 @@ class App extends Component {
   }
 }
 
-export default App;
+const ConnectedApp = connect(
+  function mapStateToProps(state) {
+    return {
+      messages: state.messages,
+    };
+  }
+)(App);
+
+export default ConnectedApp;
