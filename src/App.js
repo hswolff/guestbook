@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import GuestBookInput from './GuestBookInput';
 import { connect } from 'react-redux';
+import { getMessages, addMessage } from './data/messages';
 
 class App extends Component {
   render() {
@@ -33,16 +34,11 @@ class App extends Component {
 const ConnectedApp = connect(
   function mapStateToProps(state) {
     return {
-      messages: state.messages,
+      messages: getMessages(state),
     };
   },
-  function mapDispatchToProps(dispatch) {
-    return {
-      addMessage: (message) => dispatch({
-        type: 'addMessage',
-        payload: message,
-      }),
-    };
+  {
+    addMessage,
   },
 )(App);
 
