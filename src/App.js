@@ -5,25 +5,10 @@ import GuestBookInput from './GuestBookInput';
 import { connect } from 'react-redux';
 
 class App extends Component {
-  state = {
-    entries: [
-      'Welcome!'
-    ],
-  };
-
-  onGuestBookEntry = (value) => {
-    this.setState({
-      entries: this.state.entries.concat(value),
-    })
-  }
-
   render() {
     const {
-      entries,
-    } = this.state;
-
-    const {
-      messages
+      messages,
+      addMessage,
     } = this.props;
 
     return (
@@ -33,15 +18,10 @@ class App extends Component {
         </div>
         <GuestBookInput
           submitText="Sign it yo!"
-          onGuestBookEntry={this.onGuestBookEntry}
+          onGuestBookEntry={addMessage}
         />
         <section>
           {messages.map((entry, index) => (
-            <article key={index}>{entry}</article>
-          ))}
-        </section>
-        <section>
-          {entries.map((entry, index) => (
             <article key={index}>{entry}</article>
           ))}
         </section>
@@ -55,7 +35,15 @@ const ConnectedApp = connect(
     return {
       messages: state.messages,
     };
-  }
+  },
+  function mapDispatchToProps(dispatch) {
+    return {
+      addMessage: (message) => dispatch({
+        type: 'addMessage',
+        payload: message,
+      }),
+    };
+  },
 )(App);
 
 export default ConnectedApp;
